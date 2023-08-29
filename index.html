@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Movie picker!</h1>
+    <button id = 'randomise'>random choice</button>
+    <p id = 'random-selection'>This is your random pick</p>
+    <script>
+
+        const movies = [
+  {
+    title: "Enter the Dragon",
+    director: "Robert Clouse",
+    year: 1973,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Dirty Harry",
+    director: "Don Siegel",
+    year: 1971,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Die Hard",
+    director: "John McTiernan",
+    year: 1988,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Indiana Jones and the Last Crusade",
+    director: "Steven Spielberg",
+    year: 1989,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Terminator 2: Judgment Day",
+    director: "James Cameron",
+    year: 1991,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Speed",
+    director: "Jan de Bont",
+    year: 1994,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "The Dark Knight",
+    director: "Christopher Nolan",
+    year: 2008,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Gladiator",
+    director: "Ridley Scott",
+    year: 2000,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "Mad Max: Fury Road",
+    director: "George Miller",
+    year: 2015,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "John Wick",
+    director: "Chad Stahelski",
+    year: 2014,
+    genre: "Action",
+    language: "English"
+  },
+  {
+    title: "El perro",
+    director: "Antonio Isasi-Isasmendi",
+    year: 1977,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Perros callejeros",
+    director: "José Antonio de la Loma",
+    year: 1977,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Cazador de serpientes",
+    director: "Amando de Ossorio",
+    year: 1982,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Bajarse al moro",
+    director: "Fernando Colomo",
+    year: 1989,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "El día de la bestia",
+    director: "Álex de la Iglesia",
+    year: 1995,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Abre los ojos",
+    director: "Alejandro Amenábar",
+    year: 1997,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Celda 211",
+    director: "Daniel Monzón",
+    year: 2009,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Los cronocrímenes",
+    director: "Nacho Vigalondo",
+    year: 2007,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Que Dios nos perdone",
+    director: "Rodrigo Sorogoyen",
+    year: 2016,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Secuestro",
+    director: "Mar Targarona",
+    year: 2016,
+    genre: "Acción",
+    language: "Spanish"
+  },
+  {
+    title: "Le Cercle Rouge",
+    director: "Jean-Pierre Melville",
+    year: 1970,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "The Getaway",
+    director: "Sam Peckinpah",
+    year: 1972,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "The Big Blue (Le Grand Bleu)",
+    director: "Luc Besson",
+    year: 1988,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "La Guerre des Tuques (The Dog Who Stopped the War)",
+    director: "André Melançon",
+    year: 1984,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "Léon: The Professional",
+    director: "Luc Besson",
+    year: 1994,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "Taxi",
+    director: "Gérard Pirès",
+    year: 1998,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "District 13",
+    director: "Pierre Morel",
+    year: 2004,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "Tell No One",
+    director: "Guillaume Canet",
+    year: 2006,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "The Intouchables",
+    director: "Olivier Nakache, Éric Toledano",
+    year: 2011,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "Raw",
+    director: "Julia Ducournau",
+    year: 2016,
+    genre: "Action",
+    language: "French"
+  },
+  {
+    title: "The Street Fighter",
+    director: "Shigehiro Ozawa",
+    year: 1974,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Lone Wolf and Cub: Sword of Vengeance",
+    director: "Kenji Misumi",
+    year: 1972,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "The Return of Godzilla",
+    director: "Koji Hashimoto",
+    year: 1984,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Tampopo",
+    director: "Juzo Itami",
+    year: 1985,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Princess Mononoke",
+    director: "Hayao Miyazaki",
+    year: 1997,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Gonin",
+    director: "Takashi Ishii",
+    year: 1995,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Battle Royale",
+    director: "Kinji Fukasaku",
+    year: 2000,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Azumi",
+    director: "Ryuhei Kitamura",
+    year: 2003,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Shin Godzilla",
+    director: "Hideaki Anno, Shinji Higuchi",
+    year: 2016,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "One Cut of the Dead",
+    director: "Shinichiro Ueda",
+    year: 2017,
+    genre: "Action",
+    language: "Japanese"
+  },
+  {
+    title: "Monty Python and the Holy Grail",
+    director: "Terry Gilliam, Terry Jones",
+    year: 1975,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Animal House",
+    director: "John Landis",
+    year: 1978,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Ferris Bueller's Day Off",
+    director: "John Hughes",
+    year: 1986,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "The Princess Bride",
+    director: "Rob Reiner",
+    year: 1987,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Dumb and Dumber",
+    director: "Peter Farrelly, Bobby Farrelly",
+    year: 1994,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Office Space",
+    director: "Mike Judge",
+    year: 1999,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Anchorman: The Legend of Ron Burgundy",
+    director: "Adam McKay",
+    year: 2004,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Superbad",
+    director: "Greg Mottola",
+    year: 2007,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "The Grand Budapest Hotel",
+    director: "Wes Anderson",
+    year: 2014,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Jojo Rabbit",
+    director: "Taika Waititi",
+    year: 2019,
+    genre: "Comedy",
+    language: "English"
+  },
+  {
+    title: "Mujeres al borde de un ataque de nervios",
+    director: "Pedro Almodóvar",
+    year: 1988,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "El día de la bestia",
+    director: "Álex de la Iglesia",
+    year: 1995,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "Torrente, el brazo tonto de la ley",
+    director: "Santiago Segura",
+    year: 1998,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "Airbag",
+    director: "Juanma Bajo Ulloa",
+    year: 1997,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "Ocho apellidos vascos",
+    director: "Emilio Martínez-Lázaro",
+    year: 2014,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "La llamada",
+    director: "Javier Ambrossi, Javier Calvo",
+    year: 2017,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "La escopeta nacional",
+    director: "Luis García Berlanga",
+    year: 1978,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "Tamaño natural",
+    director: "Luis García Berlanga",
+    year: 1973,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "El otro lado de la cama",
+    director: "Emilio Martínez-Lázaro",
+    year: 2002,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "Los cronocrímenes",
+    director: "Nacho Vigalondo",
+    year: 2007,
+    genre: "Comedy",
+    language: "Spanish"
+  },
+  {
+    title: "Three Men and a Cradle (Trois hommes et un couffin)",
+    director: "Coline Serreau",
+    year: 1985,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "La Boum",
+    director: "Claude Pinoteau",
+    year: 1980,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "The Intouchables (Intouchables)",
+    director: "Olivier Nakache, Éric Toledano",
+    year: 2011,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "La La Land (Les Belles Familles)",
+    director: "Jean-Paul Rappeneau",
+    year: 2015,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "Les Aventures de Rabbi Jacob",
+    director: "Gérard Oury",
+    year: 1973,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "Cousin, Cousine",
+    director: "Jean-Charles Tacchella",
+    year: 1975,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "The Visitors (Les Visiteurs)",
+    director: "Jean-Marie Poiré",
+    year: 1993,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "Le Dîner de Cons",
+    director: "Francis Veber",
+    year: 1998,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "Amélie",
+    director: "Jean-Pierre Jeunet",
+    year: 2001,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "Bienvenue chez les Ch'tis",
+    director: "Dany Boon",
+    year: 2008,
+    genre: "Comedy",
+    language: "French"
+  },
+  {
+    title: "Tampopo",
+    director: "Juzo Itami",
+    year: 1985,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "Marusa no Onna",
+    director: "Juzo Itami",
+    year: 1987,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "Departures (Okuribito)",
+    director: "Yojiro Takita",
+    year: 2008,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "Hula Girls",
+    director: "Sang-il Lee",
+    year: 2006,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "One Cut of the Dead (Kamera o Tomeru na!)",
+    director: "Shinichiro Ueda",
+    year: 2017,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "The Devil's Path (Kyoaku)",
+    director: "Kazuya Shiraishi",
+    year: 2013,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "Tora-san's Dear Old Home (Otoko wa Tsurai yo)",
+    director: "Yoji Yamada",
+    year: 1972,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "Shall We Dance? (Shall we dansu?)",
+    director: "Masayuki Suo",
+    year: 1996,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "Kids Return",
+    director: "Takeshi Kitano",
+    year: 1996,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "House (Hausu)",
+    director: "Nobuhiko Obayashi",
+    year: 1977,
+    genre: "Comedy",
+    language: "Japanese"
+  },
+  {
+    title: "One Flew Over the Cuckoo's Nest",
+    director: "Milos Forman",
+    year: 1975,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "Taxi Driver",
+    director: "Martin Scorsese",
+    year: 1976,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "The Breakfast Club",
+    director: "John Hughes",
+    year: 1985,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "Dead Poets Society",
+    director: "Peter Weir",
+    year: 1989,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "Forrest Gump",
+    director: "Robert Zemeckis",
+    year: 1994,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "American Beauty",
+    director: "Sam Mendes",
+    year: 1999,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "A Beautiful Mind",
+    director: "Ron Howard",
+    year: 2001,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "Requiem for a Dream",
+    director: "Darren Aronofsky",
+    year: 2000,
+    genre: "Drama",
+    language: "English"
+  },
+   {
+    title: "The Social Network",
+    director: "David Fincher",
+    year: 2010,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "Manchester by the Sea",
+    director: "Kenneth Lonergan",
+    year: 2016,
+    genre: "Drama",
+    language: "English"
+  },
+  {
+    title: "The Spirit of the Beehive (El espíritu de la colmena)",
+    director: "Víctor Erice",
+    year: 1973,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "Cria Cuervos",
+    director: "Carlos Saura",
+    year: 1976,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "Women on the Verge of a Nervous Breakdown (Mujeres al borde de un ataque de nervios)",
+    director: "Pedro Almodóvar",
+    year: 1988,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "El Sur",
+    director: "Víctor Erice",
+    year: 1983,
+    genre: "Drama",
+    language: "Spanish"
+  },
+   {
+    title: "All About My Mother (Todo sobre mi madre)",
+    director: "Pedro Almodóvar",
+    year: 1999,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "Open Your Eyes (Abre los ojos)",
+    director: "Alejandro Amenábar",
+    year: 1997,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "The Sea Inside (Mar adentro)",
+    director: "Alejandro Amenábar",
+    year: 2004,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "Talk to Her (Hable con ella)",
+    director: "Pedro Almodóvar",
+    year: 2002,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "Parallel Mothers (Madres paralelas)",
+    director: "Pedro Almodóvar",
+    year: 2021,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "The Platform (El Hoyo)",
+    director: "Galder Gaztelu-Urrutia",
+    year: 2019,
+    genre: "Drama",
+    language: "Spanish"
+  },
+  {
+    title: "The Discreet Charm of the Bourgeoisie (Le Charme discret de la bourgeoisie)",
+    director: "Luis Buñuel",
+    year: 1972,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "Get Out Your Handkerchiefs (Préparez vos mouchoirs)",
+    director: "Bertrand Blier",
+    year: 1978,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "The Last Metro (Le Dernier Métro)",
+    director: "François Truffaut",
+    year: 1980,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "Cinema Paradiso (Nuovo Cinema Paradiso)",
+    director: "Giuseppe Tornatore",
+    year: 1988,
+    genre: "Drama",
+    language: "Italian"
+  },
+  {
+    title: "La Haine",
+    director: "Mathieu Kassovitz",
+    year: 1995,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "The Dreamlife of Angels (La Vie rêvée des anges)",
+    director: "Érick Zonca",
+    year: 1998,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "The Class (Entre les murs)",
+    director: "Laurent Cantet",
+    year: 2008,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "The Diving Bell and the Butterfly (Le Scaphandre et le Papillon)",
+    director: "Julian Schnabel",
+    year: 2007,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "Blue Is the Warmest Colour (La Vie d'Adèle)",
+    director: "Abdellatif Kechiche",
+    year: 2013,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "Amour",
+    director: "Michael Haneke",
+    year: 2012,
+    genre: "Drama",
+    language: "French"
+  },
+  {
+    title: "Tampopo",
+    director: "Juzo Itami",
+    year: 1985,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "My Neighbor Totoro (Tonari no Totoro)",
+    director: "Hayao Miyazaki",
+    year: 1988,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Shall We Dance? (Shall we dansu?)",
+    director: "Masayuki Suo",
+    year: 1996,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Hana-bi",
+    director: "Takeshi Kitano",
+    year: 1997,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Departures (Okuribito)",
+    director: "Yojiro Takita",
+    year: 2008,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Nobody Knows (Dare mo shiranai)",
+    director: "Hirokazu Kore-eda",
+    year: 2004,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Shoplifters (Manbiki Kazoku)",
+    director: "Hirokazu Kore-eda",
+    year: 2018,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Your Name (Kimi no Na wa)",
+    director: "Makoto Shinkai",
+    year: 2016,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "In the Realm of the Senses (Ai no corrida)",
+    director: "Nagisa Oshima",
+    year: 1976,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Pastoral: To Die in the Country (Den-en ni shisu)",
+    director: "Shūji Terayama",
+    year: 1974,
+    genre: "Drama",
+    language: "Japanese"
+  },
+  {
+    title: "Star Wars: Episode IV - A New Hope",
+    director: "George Lucas",
+    year: 1977,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "A Clockwork Orange",
+    director: "Stanley Kubrick",
+    year: 1971,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "Blade Runner",
+    director: "Ridley Scott",
+    year: 1982,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "The Terminator",
+    director: "James Cameron",
+    year: 1984,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "The Matrix",
+    director: "The Wachowskis",
+    year: 1999,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "Gattaca",
+    director: "Andrew Niccol",
+    year: 1997,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "Interstellar",
+    director: "Christopher Nolan",
+    year: 2014,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "Ex Machina",
+    director: "Alex Garland",
+    year: 2014,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "Minority Report",
+    director: "Steven Spielberg",
+    year: 2002,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "Children of Men",
+    director: "Alfonso Cuarón",
+    year: 2006,
+    genre: "Science Fiction",
+    language: "English"
+  },
+  {
+    title: "The Holy Mountain (La montaña sagrada)",
+    director: "Alejandro Jodorowsky",
+    year: 1973,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "Alucarda",
+    director: "Juan López Moctezuma",
+    year: 1977,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+   {
+    title: "Open Your Eyes (Abre los ojos)",
+    director: "Alejandro Amenábar",
+    year: 1997,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "Time of the Plague (El tiempo de la plaga)",
+    director: "Félix Viscarret",
+    year: 1990,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "The Incident (El incidente)",
+    director: "Isaac Ezban",
+    year: 2014,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "The Platform (El Hoyo)",
+    director: "Galder Gaztelu-Urrutia",
+    year: 2019,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "The Assault (El ataque de los pájaros)",
+    director: "René Cardona Jr.",
+    year: 1987,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "Phoenix (Fénix, un caso de atentado)",
+    director: "Christian González",
+    year: 1983,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "Chronicle of an Escape (Crónica de una fuga)",
+    director: "Adrián Caetano",
+    year: 2006,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "Timecrimes (Los cronocrímenes)",
+    director: "Nacho Vigalondo",
+    year: 2007,
+    genre: "Science Fiction",
+    language: "Spanish"
+  },
+  {
+    title: "La Planète sauvage (Fantastic Planet)",
+    director: "René Laloux",
+    year: 1973,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Je t'aime moi non plus",
+    director: "Serge Gainsbourg",
+    year: 1976,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "The City of Lost Children (La Cité des enfants perdus)",
+    director: "Marc Caro, Jean-Pierre Jeunet",
+    year: 1995,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Gerry",
+    director: "Alain DesRochers",
+    year: 1995,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Innocence",
+    director: "Lucile Hadžihalilović",
+    year: 2004,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Demonlover",
+    director: "Olivier Assayas",
+    year: 2002,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "La revanche des humanoides (The Revenge of the Humanoids)",
+    director: "Aldo Lado",
+    year: 1983,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Gwendoline",
+    director: "Just Jaeckin",
+    year: 1984,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "The Wild Boys (Les garçons sauvages)",
+    director: "Bertrand Mandico",
+    year: 2017,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Mandibles (Mandibules)",
+    director: "Quentin Dupieux",
+    year: 2020,
+    genre: "Science Fiction",
+    language: "French"
+  },
+  {
+    title: "Akira",
+    director: "Katsuhiro Otomo",
+    year: 1988,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Tetsuo: The Iron Man",
+    director: "Shinya Tsukamoto",
+    year: 1989,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Ghost in the Shell (Kōkaku Kidōtai)",
+    director: "Mamoru Oshii",
+    year: 1995,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Perfect Blue",
+    director: "Satoshi Kon",
+    year: 1997,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Paprika",
+    director: "Satoshi Kon",
+    year: 2006,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "War of the Gargantuas (Furankenshutain no kaijū: Sanda tai Gaira)",
+    director: "Ishirō Honda",
+    year: 1970,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "The War in Space (Wakusei Daisensō)",
+    director: "Jun Fukuda",
+    year: 1977,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Summer Wars",
+    director: "Mamoru Hosoda",
+    year: 2009,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Time Traveller: The Girl Who Leapt Through Time",
+    director: "Masaaki Taniguchi",
+    year: 2010,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+  {
+    title: "Time of Eve (Eve no Jikan)",
+    director: "Yasuhiro Yoshiura",
+    year: 2010,
+    genre: "Science Fiction",
+    language: "Japanese"
+  },
+];
+
+const randomButton = document.getElementById('randomise')
+const randomOutput = document.getElementById('random-selection')
+
+randomButton.addEventListener('click', function() {
+  function randomMovie(film) {
+  const randomiseSelection = film[Math.floor(Math.random() * film.length)];
+  return `${randomiseSelection.title} by ${randomiseSelection.director}, ${randomiseSelection.year}.`;
+}
+  randomOutput.textContent = randomMovie(movies)
+})
+
+/* example loop to find specific movies based on finds
+for (let i = 0; i < movies.length; i++) {
+  if (movies[i].language === 'Japanese' && movies[i].year <= 1979) {
+    console.log(`${movies[i].title} by ${movies[i].director}`);
+  }
+} */
+    </script>
+</body>
+</html>
