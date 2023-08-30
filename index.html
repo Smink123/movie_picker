@@ -36,7 +36,11 @@
   </select>
 
   <button id="submit">Submit</button>
-  <p id="filmResults"></p>
+  <!--<p id="filmResults"></p>-->
+  <div id="resultsContainer">
+    <p id="resultsBox"></p>
+  </div>
+  <button id="showMore">Show More</button>
   <script>
     const movies = [{
         title: "Enter the Dragon",
@@ -1166,38 +1170,56 @@
       movies[i].year = movies[i].year.toString()
       movies[i].decade = movies[i].year.slice(0, -1) + `0's`
     }
+    
+    //DOMS
     const genreDropdown = document.getElementById("genre");
     const yearDropdown = document.getElementById("year");
     const languageDropdown = document.getElementById("language");
     const submitButton = document.getElementById("submit");
-    const results = document.getElementById("filmResults")
+    const resultsText = document.getElementById("resultsBox");
+    const showMoreButton = document.getElementById("showMore");
 
+    showMoreButton.style.display = 'none'
+
+    let searchResults = []; // Store search results
+
+    //submit button click
     submitButton.addEventListener("click", () => {
-      const selectedGenre = genreDropdown.value; //assign values of each option to a variable
+      const selectedGenre = genreDropdown.value;
       const selectedYear = yearDropdown.value;
       const selectedLanguage = languageDropdown.value;
-
-      if (selectedGenre === "" && selectedYear === "" && selectedLanguage === "") {
-        results.textContent = 'Please make at least one selection.';
-        return; // Exit the function early
-    }
-
+      if (selectedGenre === "" && selectedYear === "" && selectedLanguage === "") { //making a default value if nithing is selected
+        resultsText.textContent = 'Please make at least one selection.';
+        return;
+      }
       const filteredMovies = movies.filter(movie => {
-        const genreMatch = selectedGenre === "" || movie.genre === selectedGenre; //assigns a true value, either an empty string (if no drop down option has been selected) or it assigns it the matching object
+        const genreMatch = selectedGenre === "" || movie.genre === selectedGenre;
         const yearMatch = selectedYear === "" || movie.decade === selectedYear;
         const languageMatch = selectedLanguage === "" || movie.language === selectedLanguage;
         return genreMatch && yearMatch && languageMatch;
       });
 
-      //adding text to the page
-      results.innerHTML = '';
-      if (filteredMovies.length === 0) {
-        results.textContent = 'No movies found with that selection.'
-      } else {
-        for (let i = 0; i < filteredMovies.length; i++) {
-        results.innerHTML += `${filteredMovies[i].title} by ${filteredMovies[i].director}, ${filteredMovies[i].year}.<br>`;
-      } //push into new array in this structure then commence with the search results increment
-      }      
+      searchResults = filteredMovies.map(movie => `${movie.title} by ${movie.director}, ${movie.year}.`); 
+      displayResults(searchResults, itemsToShow);
+    });
+
+    let itemsToShow = 4;
+    let currentEndIndex = itemsToShow;
+
+    function displayResults(results, endIndex) {
+      showMoreButton.style.display = 'block'
+      resultsText.innerHTML = "";
+      for (let i = 0; i < endIndex && i < results.length; i++) { //making sure the loop does not exceed both the endIndex amount and the array length
+        const resultElement = document.createElement("p");
+        resultElement.textContent = results[i];
+        resultsText.appendChild(resultElement);
+      }
+    }
+
+    //show more button
+    showMoreButton.addEventListener("click", () => {
+      currentEndIndex += itemsToShow; // Increase the end index with the amount being shown at a time
+      displayResults(searchResults, currentEndIndex);
     });
 
     //randomise button
@@ -1210,7 +1232,6 @@
       }
       randomOutput.textContent = randomMovie(movies)
     })
-
   </script>
 </body>
 
