@@ -24,7 +24,6 @@
     <option value="2000's">2000's</option>
     <option value="2010's">2010's</option>
   </select>
-
   <label for="language">Language:</label>
   <select id="language">
     <option value="">All Languages</option>
@@ -33,15 +32,14 @@
     <option value="french">French</option>
     <option value="japanese">Japanese</option>
   </select>
-
-  <button id="submit">Submit</button>
-  <label id="order">Sort by:</label>
-  <select id="order">
-    <option value="">Default</option>
-    <option value="aZTitle">A-Z by film title</option>
-    <option value="aZDirector">A-Z by director</option>
+  <label for="orderOption">Sort by:</label>
+  <select id="orderOption">
+    <option value="default">Randomise</option>
+    <option value="azTitle">A-Z by film title</option>
+    <option value="azDirector">A-Z by director</option>
     <option value="numberYear">By release year</option>
   </select>
+  <button id="submit">Submit</button>
   <p id="resultsNumber"></p>
   <p id="resultsBox"></p>
   <button id="showMore">Show More</button>
@@ -1175,6 +1173,7 @@
       movies[i].year = movies[i].year.toString()
       movies[i].decade = movies[i].year.slice(0, -1) + `0's`
     }
+    //
     //DOMS
     const genreDropdown = document.getElementById("genre");
     const yearDropdown = document.getElementById("year");
@@ -1184,12 +1183,13 @@
     const showMoreButton = document.getElementById("showMore");
     const showAllButton = document.getElementById("showAll")
     const searchResultsNumber = document.getElementById("resultsNumber")
+    const sortDropdown = document.getElementById("orderOption")
 
     showMoreButton.style.display = 'none';
     showAllButton.style.display = 'none'
 
     let searchResults = []; // Store search results
-    let itemsToShow = 4;
+    let itemsToShow = 1;
     let currentEndIndex = itemsToShow;
 
     function hideSearchButtons(buttonOne, buttonTwo) {
@@ -1201,6 +1201,14 @@
       buttonOne.style.display = 'block';
       buttonTwo.style.display = 'block';
     }
+
+    function randomizeIndexesInPlace(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
 
     //submit button click
     submitButton.addEventListener("click", () => {
@@ -1215,6 +1223,16 @@
         hideSearchButtons(showMoreButton, showAllButton);
         return;
       }
+      const selectedOrder = sortDropdown.value;
+      if (selectedOrder === 'azTitle') {
+        movies.sort((a, b) => a.title.localeCompare(b.title));
+      } else if (selectedOrder === 'azDirector') {
+        movies.sort((a, b) => a.director.localeCompare(b.director));
+      } else if (selectedOrder === 'numberYear') {
+        movies.sort((a, b) => a.year - b.year);
+      } else if (selectedOrder === 'default'){
+        randomizeIndexesInPlace(movies);
+      }
       const filteredMovies = movies.filter(movie => {
         const genreMatch = selectedGenre === "" || movie.genre === selectedGenre;
         const yearMatch = selectedYear === "" || movie.decade === selectedYear;
@@ -1222,7 +1240,7 @@
         return genreMatch && yearMatch && languageMatch;
       });
       searchResults = filteredMovies.map(movie => `${movie.title}, ${movie.year}. Directed by ${movie.director}.`);
-      itemsToShow = 4; // Reset itemsToShow to default value after every search
+      itemsToShow = 1; // Reset itemsToShow to default value after every search
       currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
       displayResults(searchResults, itemsToShow);
       if (searchResults.length <= itemsToShow) {
