@@ -35,7 +35,13 @@
   </select>
 
   <button id="submit">Submit</button>
-  <!--<p id="filmResults"></p>-->
+  <label id="order">Sort by:</label>
+  <select id="order">
+    <option value="">Default</option>
+    <option value="aZTitle">A-Z by film title</option>
+    <option value="aZDirector">A-Z by director</option>
+    <option value="numberYear">By release year</option>
+  </select>
   <p id="resultsNumber"></p>
   <p id="resultsBox"></p>
   <button id="showMore">Show More</button>
@@ -1205,6 +1211,8 @@
       const selectedLanguage = languageDropdown.value;
       if (selectedGenre === "" && selectedYear === "" && selectedLanguage === "") { //making a default value if nithing is selected
         resultsText.textContent = 'Please make at least one selection.';
+        searchResults.style.display = 'none'
+        hideSearchButtons(showMoreButton, showAllButton);
         return;
       }
       const filteredMovies = movies.filter(movie => {
@@ -1213,7 +1221,7 @@
         const languageMatch = selectedLanguage === "" || movie.language === selectedLanguage;
         return genreMatch && yearMatch && languageMatch;
       });
-      searchResults = filteredMovies.map(movie => `${movie.title}, ${movie.year}. Directed by ${movie.director}`);
+      searchResults = filteredMovies.map(movie => `${movie.title}, ${movie.year}. Directed by ${movie.director}.`);
       itemsToShow = 4; // Reset itemsToShow to default value after every search
       currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
       displayResults(searchResults, itemsToShow);
@@ -1236,6 +1244,7 @@
         showMoreButton.style.display = 'none'
       }
       resultsText.innerHTML = "";
+      
       for (let i = 0; i < endIndex && i < results.length; i++) { //making sure the loop does not exceed both the endIndex amount and the array length
         const resultElement = document.createElement("p");
         resultElement.textContent = results[i];
@@ -1264,10 +1273,11 @@
 
     randomButton.addEventListener('click', function() {
       searchResultsNumber.style.display = 'none'
+      hideSearchButtons(showMoreButton, showAllButton);
 
       function randomMovie(film) {
         const randomiseSelection = film[Math.floor(Math.random() * film.length)];
-        return `${randomiseSelection.title} by ${randomiseSelection.director}, ${randomiseSelection.year}.`;
+        return `${randomiseSelection.title}, ${randomiseSelection.year}. Directed by ${randomiseSelection.director}.`;
       }
       resultsText.textContent = randomMovie(movies)
     })
@@ -1275,3 +1285,22 @@
 </body>
 
 </html>
+
+
+
+
+<!---
+//sort search results;
+    const sortResults = document.getElementById('order');
+    sortResults.addEventListener('change', (event) => {
+      const selectedOption = event.target.value;
+      if (selectedOption === 'aZTitle') {
+        searchResults.sort((a, b) => b.title.localeCompare(a.title));
+      } else if (selectedOption === 'aZDirector') {
+        searchResults.sort((a, b) => b.director.localeCompare(a.director));
+      } else if (selectedOption === 'numberYear') {
+        searchResults.sort((a, b) => a.year - b.year);
+      } else if (selectedOption === ''){
+      }
+    })
+  -->
