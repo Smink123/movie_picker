@@ -39,6 +39,7 @@
   <p id="resultsNumber"></p>
   <p id="resultsBox"></p>
   <button id="showMore">Show More</button>
+  <button id="showAll">Show All</button>
   <script>
     const movies = [{
         title: "Enter the Dragon",
@@ -1168,7 +1169,6 @@
       movies[i].year = movies[i].year.toString()
       movies[i].decade = movies[i].year.slice(0, -1) + `0's`
     }
-    
     //DOMS
     const genreDropdown = document.getElementById("genre");
     const yearDropdown = document.getElementById("year");
@@ -1176,14 +1176,30 @@
     const submitButton = document.getElementById("submit");
     const resultsText = document.getElementById("resultsBox");
     const showMoreButton = document.getElementById("showMore");
+    const showAllButton = document.getElementById("showAll")
     const searchResultsNumber = document.getElementById("resultsNumber")
 
-    showMoreButton.style.display = 'none'
+    showMoreButton.style.display = 'none';
+    showAllButton.style.display = 'none'
 
     let searchResults = []; // Store search results
+    let itemsToShow = 4;
+    let currentEndIndex = itemsToShow;
+
+    function hideSearchButtons(buttonOne, buttonTwo) {
+      buttonOne.style.display = 'none';
+      buttonTwo.style.display = 'none';
+    }
+
+    function showSearchButtons(buttonOne, buttonTwo) {
+      buttonOne.style.display = 'block';
+      buttonTwo.style.display = 'block';
+    }
 
     //submit button click
     submitButton.addEventListener("click", () => {
+      searchResultsNumber.style.display = 'block';
+
       const selectedGenre = genreDropdown.value;
       const selectedYear = yearDropdown.value;
       const selectedLanguage = languageDropdown.value;
@@ -1197,13 +1213,16 @@
         const languageMatch = selectedLanguage === "" || movie.language === selectedLanguage;
         return genreMatch && yearMatch && languageMatch;
       });
-
-      searchResults = filteredMovies.map(movie => `${movie.title} by ${movie.director}, ${movie.year}.`); 
+      searchResults = filteredMovies.map(movie => `${movie.title}, ${movie.year}. Directed by ${movie.director}`);
+      itemsToShow = 4; // Reset itemsToShow to default value after every search
+      currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
       displayResults(searchResults, itemsToShow);
+      if (searchResults.length <= itemsToShow) {
+        hideSearchButtons(showMoreButton, showAllButton);
+      } else {
+        showSearchButtons(showMoreButton, showAllButton)
+      }
     });
-
-    let itemsToShow = 4;
-    let currentEndIndex = itemsToShow;
 
     function displayResults(results, endIndex) {
       if (results.length === 1) {
@@ -1212,7 +1231,7 @@
         searchResultsNumber.textContent = `Search results ${results.length} films:`;
       }
       if (results.length >= 1) {
-        showMoreButton.style.display = 'block'
+        showSearchButtons(showMoreButton, showAllButton)
       } else {
         showMoreButton.style.display = 'none'
       }
@@ -1224,15 +1243,28 @@
       }
     }
 
+    //show all buttons
+    showAllButton.addEventListener("click", () => {
+      itemsToShow = searchResults.length;
+      currentEndIndex += itemsToShow;
+      displayResults(searchResults, currentEndIndex);
+      hideSearchButtons(showMoreButton, showAllButton)
+    });
+
     //show more button
     showMoreButton.addEventListener("click", () => {
       currentEndIndex += itemsToShow; // Increase the end index with the amount being shown at a time
       displayResults(searchResults, currentEndIndex);
+      if (currentEndIndex >= searchResults.length) {
+        hideSearchButtons(showMoreButton, showAllButton)
+      }
     });
-
     //randomise button
     const randomButton = document.getElementById('randomise')
+
     randomButton.addEventListener('click', function() {
+      searchResultsNumber.style.display = 'none'
+
       function randomMovie(film) {
         const randomiseSelection = film[Math.floor(Math.random() * film.length)];
         return `${randomiseSelection.title} by ${randomiseSelection.director}, ${randomiseSelection.year}.`;
