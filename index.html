@@ -7,7 +7,6 @@
 
 <body>
   <button id='randomise'>random choice</button>
-  <p id='random-selection'>This is your random pick</p>
   <label for="genre">Genre:</label>
   <select id="genre">
     <option value="">All Genres</option>
@@ -18,7 +17,7 @@
   </select>
   <label for="year">Year:</label>
   <select id="year">
-    <option value="">All Years</option>
+    <option value="">All Decades</option>
     <option value="1970's">1970's</option>
     <option value="1980's">1980's</option>
     <option value="1990's">1990's</option>
@@ -37,9 +36,8 @@
 
   <button id="submit">Submit</button>
   <!--<p id="filmResults"></p>-->
-  <div id="resultsContainer">
-    <p id="resultsBox"></p>
-  </div>
+  <p id="resultsNumber"></p>
+  <p id="resultsBox"></p>
   <button id="showMore">Show More</button>
   <script>
     const movies = [{
@@ -1178,6 +1176,7 @@
     const submitButton = document.getElementById("submit");
     const resultsText = document.getElementById("resultsBox");
     const showMoreButton = document.getElementById("showMore");
+    const searchResultsNumber = document.getElementById("resultsNumber")
 
     showMoreButton.style.display = 'none'
 
@@ -1207,7 +1206,16 @@
     let currentEndIndex = itemsToShow;
 
     function displayResults(results, endIndex) {
-      showMoreButton.style.display = 'block'
+      if (results.length === 1) {
+        searchResultsNumber.textContent = `Search results ${results.length} film:`;
+      } else {
+        searchResultsNumber.textContent = `Search results ${results.length} films:`;
+      }
+      if (results.length >= 1) {
+        showMoreButton.style.display = 'block'
+      } else {
+        showMoreButton.style.display = 'none'
+      }
       resultsText.innerHTML = "";
       for (let i = 0; i < endIndex && i < results.length; i++) { //making sure the loop does not exceed both the endIndex amount and the array length
         const resultElement = document.createElement("p");
@@ -1224,13 +1232,12 @@
 
     //randomise button
     const randomButton = document.getElementById('randomise')
-    const randomOutput = document.getElementById('random-selection')
     randomButton.addEventListener('click', function() {
       function randomMovie(film) {
         const randomiseSelection = film[Math.floor(Math.random() * film.length)];
         return `${randomiseSelection.title} by ${randomiseSelection.director}, ${randomiseSelection.year}.`;
       }
-      randomOutput.textContent = randomMovie(movies)
+      resultsText.textContent = randomMovie(movies)
     })
   </script>
 </body>
