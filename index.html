@@ -1166,6 +1166,25 @@
         language: "Japanese"
       },
     ];
+    //remove duplicate listings
+    function removeDuplicateObjects(arr, property) {
+      const uniqueMap = new Map();
+      const uniqueArray = [];
+
+      for (const movie of arr) {
+        if (!uniqueMap.has(movie[property])) {
+          uniqueMap.set(movie[property], true);
+          uniqueArray.push(movie);
+        }
+      }
+      arr.length = 0; // Clear the original array
+      for (const movie of uniqueArray) {
+        arr.push(movie);
+      }
+    }
+    
+    removeDuplicateObjects(movies, 'title');
+
     //switch up array format
     for (let i = 0; i < movies.length; i++) {
       movies[i].genre = movies[i].genre.toLowerCase();
@@ -1173,6 +1192,7 @@
       movies[i].year = movies[i].year.toString()
       movies[i].decade = movies[i].year.slice(0, -1) + `0's`
     }
+
     //
     //DOMS
     const genreDropdown = document.getElementById("genre");
@@ -1303,22 +1323,3 @@
 </body>
 
 </html>
-
-
-
-
-<!---
-//sort search results;
-    const sortResults = document.getElementById('order');
-    sortResults.addEventListener('change', (event) => {
-      const selectedOption = event.target.value;
-      if (selectedOption === 'aZTitle') {
-        searchResults.sort((a, b) => b.title.localeCompare(a.title));
-      } else if (selectedOption === 'aZDirector') {
-        searchResults.sort((a, b) => b.director.localeCompare(a.director));
-      } else if (selectedOption === 'numberYear') {
-        searchResults.sort((a, b) => a.year - b.year);
-      } else if (selectedOption === ''){
-      }
-    })
-  -->
