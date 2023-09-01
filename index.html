@@ -1207,23 +1207,26 @@ function removeDuplicateObjects(arr, property) {
     const showAllButton = document.getElementById("showAll")
     const searchResultsNumber = document.getElementById("resultsNumber")
     const sortDropdown = document.getElementById("orderOption")
+    const randomButton = document.getElementById('randomise')
+    const apiResults = document.getElementById('movieDetails')
 
-    showMoreButton.style.display = 'none';
-    showAllButton.style.display = 'none'
+    function hideElement(element) {
+      element.style.display = 'none'
+    }
+
+    function showelement(element) {
+      element.style.display = 'block';
+    }
+
+    hideElement(showMoreButton)
+    hideElement(showAllButton)
+    hideElement(apiResults)
 
     let searchResults = []; // Store search results
     let itemsToShow = 1;
     let currentEndIndex = itemsToShow;
 
-    function hideSearchButtons(buttonOne, buttonTwo) {
-      buttonOne.style.display = 'none';
-      buttonTwo.style.display = 'none';
-    }
 
-    function showSearchButtons(buttonOne, buttonTwo) {
-      buttonOne.style.display = 'block';
-      buttonTwo.style.display = 'block';
-    }
 
     function randomizeIndexesInPlace(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -1270,6 +1273,7 @@ function removeDuplicateObjects(arr, property) {
     //submit button click
     submitButton.addEventListener("click", () => {
       searchResultsNumber.style.display = 'block';
+      hideElement(apiResults)
 
       const selectedGenre = genreDropdown.value;
       const selectedYear = yearDropdown.value;
@@ -1277,7 +1281,8 @@ function removeDuplicateObjects(arr, property) {
       if (selectedGenre === "" && selectedYear === "" && selectedLanguage === "") { //making a default value if nithing is selected
         resultsText.textContent = 'Please make at least one selection.';
         searchResults.style.display = 'none'
-        hideSearchButtons(showMoreButton, showAllButton);
+        hideElement(showMoreButton)
+        hideElement(showAllButton)
         return;
       }
       const selectedOrder = sortDropdown.value;
@@ -1306,9 +1311,11 @@ function removeDuplicateObjects(arr, property) {
       currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
       displayResults(searchResults, itemsToShow);
       if (searchResults.length <= itemsToShow) {
-        hideSearchButtons(showMoreButton, showAllButton);
+        hideElement(showMoreButton)
+        hideElement(showAllButton)
       } else {
-        showSearchButtons(showMoreButton, showAllButton)
+        showelement(showMoreButton)
+        showelement(showAllButton)
       }
     });
 
@@ -1319,9 +1326,10 @@ function removeDuplicateObjects(arr, property) {
     searchResultsNumber.textContent = `Search results ${results.length} films:`;
   }
   if (results.length >= 1) {
-    showSearchButtons(showMoreButton, showAllButton);
+    showelement(showMoreButton)
+    showelement(showAllButton)
   } else {
-    showMoreButton.style.display = 'none';
+    hideElement(showMoreButton)
   }
   resultsText.innerHTML = "";
 
@@ -1338,6 +1346,7 @@ function removeDuplicateObjects(arr, property) {
       console.log('Movie info button clicked!');
       console.log('Movie ID:', results[i].movieId); // Access the movieId from the results array
       getMovieInfo(results[i].movieId); // Pass the correct movieId to getMovieInfo
+      //hideElement(movieInfoButton)
     });
 
     resultElement.appendChild(movieInfoButton);
@@ -1349,7 +1358,8 @@ function removeDuplicateObjects(arr, property) {
       itemsToShow = searchResults.length;
       currentEndIndex += itemsToShow;
       displayResults(searchResults, currentEndIndex);
-      hideSearchButtons(showMoreButton, showAllButton)
+      hideElement(showMoreButton)
+      hideElement(showAllButton)
     });
 
     //show more button
@@ -1357,15 +1367,17 @@ function removeDuplicateObjects(arr, property) {
       currentEndIndex += itemsToShow; // Increase the end index with the amount being shown at a time
       displayResults(searchResults, currentEndIndex);
       if (currentEndIndex >= searchResults.length) {
-        hideSearchButtons(showMoreButton, showAllButton)
+        hideElement(showMoreButton)
+        hideElement(showAllButton)
       }
     });
     //randomise button
-    const randomButton = document.getElementById('randomise')
 
     randomButton.addEventListener('click', function() {
       searchResultsNumber.style.display = 'none'
-      hideSearchButtons(showMoreButton, showAllButton);
+      hideElement(showMoreButton)
+      hideElement(showAllButton)
+      hideElement(apiResults);
 
       function randomMovie(film) {
         const randomiseSelection = film[Math.floor(Math.random() * film.length)];
@@ -1383,6 +1395,8 @@ function removeDuplicateObjects(arr, property) {
         for (let i = 0; i < movies.length; i++) {
           if (resultsText.textContent.includes(movies[i].title) && resultsText.textContent.includes(movies[i].director)) {
             getMovieInfo(movies[i].movieId)
+            showelement(apiResults)
+            hideElement(randomMovieInfoButton)
           }
         }
       });
