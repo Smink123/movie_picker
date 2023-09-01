@@ -1296,7 +1296,12 @@ function removeDuplicateObjects(arr, property) {
         const languageMatch = selectedLanguage === "" || movie.language === selectedLanguage;
         return genreMatch && yearMatch && languageMatch;
       });
-      searchResults = filteredMovies.map(movie => `${movie.title}, ${movie.year}. Directed by ${movie.director}.`);
+      searchResults = filteredMovies.map(movie => ({
+        title: movie.title,
+  director: movie.director,
+  year: movie.year,
+  movieId: movie.movieId
+}));
       itemsToShow = 1; // Reset itemsToShow to default value after every search
       currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
       displayResults(searchResults, itemsToShow);
@@ -1308,37 +1313,36 @@ function removeDuplicateObjects(arr, property) {
     });
 
     function displayResults(results, endIndex) {
-      if (results.length === 1) {
-        searchResultsNumber.textContent = `Search results ${results.length} film:`;
-      } else {
-        searchResultsNumber.textContent = `Search results ${results.length} films:`;
-      }
-      if (results.length >= 1) {
-        showSearchButtons(showMoreButton, showAllButton)
-      } else {
-        showMoreButton.style.display = 'none'
-      }
-      resultsText.innerHTML = "";
-      
-      for (let i = 0; i < endIndex && i < results.length; i++) { //making sure the loop does not exceed both the endIndex amount and the array length
-        const resultElement = document.createElement("p");
-        resultElement.textContent = results[i];
-        resultsText.appendChild(resultElement);
-        
-        const movieInfoButton = document.createElement("button");
-        movieInfoButton.textContent = 'want more movie info?'
-        movieInfoButton.id = 'moreMovieInfo'; 
-        
-        movieInfoButton.addEventListener('click', () => {
-          console.log('Movie info button clicked!');
-          console.log('Movie ID:', movies[i].movieId);
+  if (results.length === 1) {
+    searchResultsNumber.textContent = `Search results ${results.length} film:`;
+  } else {
+    searchResultsNumber.textContent = `Search results ${results.length} films:`;
+  }
+  if (results.length >= 1) {
+    showSearchButtons(showMoreButton, showAllButton);
+  } else {
+    showMoreButton.style.display = 'none';
+  }
+  resultsText.innerHTML = "";
 
-          getMovieInfo(movies[i].movieId)
-        });
-        
-        resultElement.appendChild(movieInfoButton);
-      }
-    }
+  for (let i = 0; i < endIndex && i < results.length; i++) {
+    const resultElement = document.createElement("p");
+    resultElement.textContent = `${results[i].title}, directed by ${results[i].director}, ${results[i].year}`;
+    resultsText.appendChild(resultElement);
+
+    const movieInfoButton = document.createElement("button");
+    movieInfoButton.textContent = 'want more movie info?';
+    movieInfoButton.id = 'moreMovieInfo';
+
+    movieInfoButton.addEventListener('click', () => {
+      console.log('Movie info button clicked!');
+      console.log('Movie ID:', results[i].movieId); // Access the movieId from the results array
+      getMovieInfo(results[i].movieId); // Pass the correct movieId to getMovieInfo
+    });
+
+    resultElement.appendChild(movieInfoButton);
+  }
+}
 
     //show all buttons
     showAllButton.addEventListener("click", () => {
@@ -1368,6 +1372,21 @@ function removeDuplicateObjects(arr, property) {
         return `${randomiseSelection.title}, ${randomiseSelection.year}. Directed by ${randomiseSelection.director}.`;
       }
       resultsText.textContent = randomMovie(movies)
+
+      const randomMovieInfoButton = document.createElement("button");
+      randomMovieInfoButton.textContent = 'want more movie info?'
+      randomMovieInfoButton.id = 'randomMovieInfo'; 
+      
+      randomMovieInfoButton.addEventListener('click', () => {
+        console.log('Movie info button clicked!');
+        console.log('Movie ID:', randomMovie(movies).movieId);
+        for (let i = 0; i < movies.length; i++) {
+          if (resultsText.textContent.includes(movies[i].title) && resultsText.textContent.includes(movies[i].director)) {
+            getMovieInfo(movies[i].movieId)
+          }
+        }
+      });
+      resultsText.appendChild(randomMovieInfoButton);
     })
   </script>
 </body>
