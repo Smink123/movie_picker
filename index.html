@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>Movie Filter</title>
-</head>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Picker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap" rel="stylesheet">
 <body>
-  <button id='randomise'>random choice</button>
+  <div id="topSection">
+    <h1>CINE PICK</h1>
+    <p>In search of the perfect film for tonight's viewing? Allow CINEPICK to curate a tailored selection based on your unique preferences. Bid farewell to decision fatigue and embrace refined cinematic experiences with CINEPICK. Your movie night just got an upgrade.</p>
   <label for="genre">Genre:</label>
   <select id="genre">
     <option value="">All Genres</option>
@@ -34,12 +45,16 @@
   </select>
   <label for="orderOption">Sort by:</label>
   <select id="orderOption">
-    <option value="default">Randomise</option>
+    <option value="default">Randomise order</option>
     <option value="azTitle">A-Z by film title</option>
     <option value="azDirector">A-Z by director</option>
     <option value="numberYear">By release year</option>
   </select>
   <button id="submit">Submit</button>
+  <br>
+  <br>
+  <button id='randomise'>random choice</button>
+  </div>
   <p id="resultsNumber"></p>
   <p id="resultsBox"></p>
   <button id="showMore">Show More</button>
