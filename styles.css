@@ -1,9 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin-top: 0;
+    height: auto;
+}
+
 p, label, select {
     font-family: 'IBM Plex Mono', monospace;
 }
 
-select, label {
+label {
     font-size: 1.5rem;
+    color: white;
+    width: 300px;
+}
+
+select {
+    font-size: 1.5rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 300px;
 }
 
 h1, h2, h3 {
@@ -12,6 +30,12 @@ h1, h2, h3 {
 
 h1 {
     font-size: 10rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+    color: white;
 }
 
 h2 {
@@ -27,7 +51,50 @@ button {
     font-weight: 700;
 }
 
-#topSection {
-    background-color: aqua;
+#topSectionContainer {
+    background-image: url(topSectionImage.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 100vh;
+    width: 100%;
+    margin: 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#topSectionContainer p {
+    color: white;
+}
+
+#websiteIntro {
+    width: 50vw;
+    text-align: center;
+}
+
+#resultsContainer {
+    display: flex;
+    height: 100vh;
+}
+
+#searchResultContainer {
+    width: 50%;
+    background-color: #3a48d8;
+    color: white;
+}
+
+#movieDetails {
+    width: 50%;
+    text-align: center;
+    margin: 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#poster {
+    width: 50%;
+    height: auto;
 }

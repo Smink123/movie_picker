@@ -15,9 +15,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap" rel="stylesheet">
 <body>
-  <div id="topSection">
+  <div id="topSectionContainer">
     <h1>CINE PICK</h1>
-    <p>In search of the perfect film for tonight's viewing? Allow CINEPICK to curate a tailored selection based on your unique preferences. Bid farewell to decision fatigue and embrace refined cinematic experiences with CINEPICK. Your movie night just got an upgrade.</p>
+    <p id="websiteIntro">In search of the perfect film for tonight's viewing? Allow CINEPICK to curate a tailored selection based on your unique preferences. Bid farewell to decision fatigue and embrace refined cinematic experiences with CINEPICK. Your movie night just got an upgrade.</p>
   <label for="genre">Genre:</label>
   <select id="genre">
     <option value="">All Genres</option>
@@ -55,15 +55,18 @@
   <br>
   <button id='randomise'>random choice</button>
   </div>
-  <p id="resultsNumber"></p>
-  <p id="resultsBox"></p>
-  <button id="showMore">Show More</button>
-  <button id="showAll">Show All</button>
-  <div id="movieDetails">
-    <h2>Movie Details</h2>
-    <img id="poster" src="" alt="Movie Poster">
-    <h3 id="movieTitle"></h3>
-    <p id="movieOverview"></p>
+  <div id="resultsContainer">
+    <div id="searchResultContainer">
+      <p id="resultsNumber"></p>
+      <p id="resultsBox"></p>
+      <button id="showMore">Show More</button>
+      <button id="showAll">Show All</button>
+    </div>
+    <div id="movieDetails">
+      <h3 id="movieTitle"></h3>
+      <img id="poster" src="" alt="Movie Poster">
+      <p id="movieOverview"></p>
+    </div>
   </div>
   <script>
     const movies = [{
