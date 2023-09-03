@@ -55,7 +55,8 @@
   </select>
   <button id="submit">Submit</button>
   <p>Or, fancy something random?</p>
-  <button id='randomise'>random choice</button>
+  <a href="#resultsContainer"><button id='randomise'>random choice</button></a>
+  <p id="invalidForm"></p>
   </div>
   <div id="resultsContainer">
     <div id="searchResultContainer">
@@ -1221,6 +1222,12 @@
     const sortDropdown = document.getElementById("orderOption")
     const randomButton = document.getElementById('randomise')
     const apiResults = document.getElementById('movieDetails')
+    const unfilledForm = document.getElementById('invalidForm')
+
+    const movieInfoButton = document.createElement("div"); // Change from button to div
+movieInfoButton.classList.add('movie-info-button-container'); // Add a CSS class for styling
+movieInfoButton.innerHTML = '<button class="more-info-button">Want more movie info?</button>';
+
 
     //hide function
     function hideElement(element) {
@@ -1280,106 +1287,121 @@
 
     //submit button click
     submitButton.addEventListener("click", () => {
-      searchResultsNumber.style.display = 'block';
-      hideElement(randomiseAgainButton)
-      hideElement(apiResults)
-      const selectedGenre = genreDropdown.value;
-      const selectedYear = yearDropdown.value;
-      const selectedLanguage = languageDropdown.value;
-      if (selectedGenre === "" && selectedYear === "" && selectedLanguage === "") { //making a default value if nithing is selected
-        resultsText.textContent = 'Please make at least one selection.';
-        searchResults.style.display = 'none'
-        hideElement(showMoreButton)
-        hideElement(showAllButton)
-        return;
+  searchResultsNumber.style.display = 'block';
+  hideElement(randomiseAgainButton);
+  hideElement(apiResults);
+  const selectedGenre = genreDropdown.value;
+  const selectedYear = yearDropdown.value;
+  const selectedLanguage = languageDropdown.value;
+
+  if (selectedGenre === "" && selectedYear === "" && selectedLanguage === "") { // making a default value if nothing is selected
+    unfilledForm.textContent = 'Please make at least one selection.';
+    unfilledForm.style.color = 'red';
+    searchResults.style.display = 'none';
+    hideElement(showMoreButton);
+    hideElement(showAllButton);
+  } else {
+    const selectedOrder = sortDropdown.value;
+    hideElement(unfilledForm)
+    if (selectedOrder === 'azTitle') {
+      movies.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (selectedOrder === 'azDirector') {
+      movies.sort((a, b) => a.director.localeCompare(b.director));
+    } else if (selectedOrder === 'numberYear') {
+      movies.sort((a, b) => a.year - b.year);
+    } else if (selectedOrder === 'default') {
+      randomizeIndexesInPlace(movies);
+    }
+    const filteredMovies = movies.filter(movie => {
+      const genreMatch = selectedGenre === "" || movie.genre === selectedGenre;
+      const yearMatch = selectedYear === "" || movie.decade === selectedYear;
+      const languageMatch = selectedLanguage === "" || movie.language === selectedLanguage;
+      return genreMatch && yearMatch && languageMatch;
+    });
+    searchResults = filteredMovies.map(movie => ({
+      title: movie.title,
+      director: movie.director,
+      year: movie.year,
+      movieId: movie.movieId
+    }));
+    itemsToShow = 1; // Reset itemsToShow to the default value after every search
+    currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
+    displayResults(searchResults, itemsToShow);
+    if (searchResults.length <= itemsToShow) {
+      hideElement(showMoreButton);
+      hideElement(showAllButton);
+    } else {
+      showelement(showMoreButton);
+      showelement(showAllButton);
+    }
+  }
+
+  // Scroll to the #resultsContainer only if the conditions are not met
+  if (!(selectedGenre === "" && selectedYear === "" && selectedLanguage === "")) {
+    document.getElementById('resultsContainer').scrollIntoView();
+  }
+});
+
+function displayResults(results, endIndex) {
+  if (results.length === 1) {
+    searchResultsNumber.textContent = `Search results ${results.length} film:`;
+  } else {
+    searchResultsNumber.textContent = `Search results ${results.length} films:`;
+  }
+  if (results.length >= 1) {
+    showelement(showMoreButton);
+    showelement(showAllButton);
+  } else {
+    hideElement(showMoreButton);
+  }
+  // Empty the HTML
+  resultsText.innerHTML = "";
+  // Initialize variables to track the active button and state
+  let activeButton = null;
+  let isInfoVisible = false;
+  for (let i = 0; i < endIndex && i < results.length; i++) {
+    const resultElement = document.createElement("p");
+    const movieTitle = results[i].title;
+    const director = results[i].director;
+    const year = results[i].year;
+    resultElement.innerHTML = `<strong>'${movieTitle}'</strong><br>Directed by ${director}, ${year}`;
+    resultsText.appendChild(resultElement);
+    
+    // Create a container for the "Want more movie info?" button
+    const movieInfoButton = document.createElement("div");
+    movieInfoButton.classList.add('movie-info-button-container');
+    movieInfoButton.innerHTML = '<button class="more-info-button">Want more movie info?</button>';
+    
+    // Add a click event listener to the button
+    movieInfoButton.addEventListener('click', () => {
+      console.log('Movie info button clicked!');
+      console.log('Movie ID:', results[i].movieId); // Access the movieId from the results array
+      // Check if there is an active button
+      if (activeButton && activeButton !== movieInfoButton) {
+        // If there's an active button and it's not the clicked button, revert it back
+        activeButton.querySelector('.more-info-button').textContent = 'Want more movie info?';
+        hideElement(apiResults); // Hide the API content associated with the previous button
+        isInfoVisible = false;
       }
-      const selectedOrder = sortDropdown.value;
-      if (selectedOrder === 'azTitle') {
-        movies.sort((a, b) => a.title.localeCompare(b.title));
-      } else if (selectedOrder === 'azDirector') {
-        movies.sort((a, b) => a.director.localeCompare(b.director));
-      } else if (selectedOrder === 'numberYear') {
-        movies.sort((a, b) => a.year - b.year);
-      } else if (selectedOrder === 'default') {
-        randomizeIndexesInPlace(movies);
-      }
-      const filteredMovies = movies.filter(movie => {
-        const genreMatch = selectedGenre === "" || movie.genre === selectedGenre;
-        const yearMatch = selectedYear === "" || movie.decade === selectedYear;
-        const languageMatch = selectedLanguage === "" || movie.language === selectedLanguage;
-        return genreMatch && yearMatch && languageMatch;
-      });
-      searchResults = filteredMovies.map(movie => ({
-        title: movie.title,
-        director: movie.director,
-        year: movie.year,
-        movieId: movie.movieId
-      }));
-      itemsToShow = 1; // Reset itemsToShow to default value after every search
-      currentEndIndex = itemsToShow; // Reset the currentEndIndex as well
-      displayResults(searchResults, itemsToShow);
-      if (searchResults.length <= itemsToShow) {
-        hideElement(showMoreButton)
-        hideElement(showAllButton)
+      // Toggle the state and show/hide the API content accordingly
+      if (!isInfoVisible) {
+        getMovieInfo(results[i].movieId);
+        movieInfoButton.querySelector('.more-info-button').textContent = 'Show less';
+        isInfoVisible = true;
+        activeButton = movieInfoButton; // Update the active button reference
       } else {
-        showelement(showMoreButton)
-        showelement(showAllButton)
+        hideElement(apiResults);
+        movieInfoButton.querySelector('.more-info-button').textContent = 'Want more movie info?';
+        isInfoVisible = false;
+        activeButton = null; // Clear the active button reference
       }
     });
+    
+    // Append the button container to the result element
+    resultElement.appendChild(movieInfoButton);
+  }
+}
 
-    function displayResults(results, endIndex) {
-      if (results.length === 1) {
-        searchResultsNumber.textContent = `Search results ${results.length} film:`;
-      } else {
-        searchResultsNumber.textContent = `Search results ${results.length} films:`;
-      }
-      if (results.length >= 1) {
-        showelement(showMoreButton);
-        showelement(showAllButton);
-      } else {
-        hideElement(showMoreButton);
-      }
-      //empty html
-      resultsText.innerHTML = "";
-      // Initialize variables to track the active button and state
-      let activeButton = null;
-      let isInfoVisible = false;
-      for (let i = 0; i < endIndex && i < results.length; i++) {
-        const resultElement = document.createElement("p");
-        const movieTitle = results[i].title;
-        const director = results[i].director;
-        const year = results[i].year;
-        resultElement.innerHTML = `<strong>'${movieTitle}'</strong><br>Directed by ${director}, ${year}`;
-        resultsText.appendChild(resultElement);
-        const movieInfoButton = document.createElement("button");
-        movieInfoButton.textContent = 'want more movie info?';
-        movieInfoButton.id = 'moreMovieInfo';
-        movieInfoButton.addEventListener('click', () => {
-          console.log('Movie info button clicked!');
-          console.log('Movie ID:', results[i].movieId); // Access the movieId from the results array
-          // Check if there is an active button
-          if (activeButton && activeButton !== movieInfoButton) {
-            // If there's an active button and it's not the clicked button, revert it back
-            activeButton.textContent = 'want more movie info?';
-            hideElement(apiResults); // Hide the API content associated with the previous button
-            isInfoVisible = false;
-          }
-          // Toggle the state and show/hide the API content accordingly
-          if (!isInfoVisible) {
-            getMovieInfo(results[i].movieId);
-            movieInfoButton.textContent = 'show less?';
-            isInfoVisible = true;
-            activeButton = movieInfoButton; // Update the active button reference
-          } else {
-            hideElement(apiResults);
-            movieInfoButton.textContent = 'want more movie info?';
-            isInfoVisible = false;
-            activeButton = null; // Clear the active button reference
-          }
-        });
-        resultElement.appendChild(movieInfoButton);
-      }
-    }
 
     //show all buttons
     showAllButton.addEventListener("click", () => {
@@ -1399,32 +1421,24 @@
         hideElement(showAllButton)
       }
     });
-    
-    //randomise again button
-    const randomiseAgainButton = document.getElementById('randomiseAgain');
-    randomiseAgainButton.addEventListener('click', () => {
-      const randomSelection = movies[Math.floor(Math.random() * movies.length)];
-      resultsText.textContent = `${randomSelection.title}, ${randomSelection.year}. Directed by ${randomSelection.director}`;
-      getMovieInfo(randomSelection.movieId);
-      showElement(apiResults);
-    });
 
-    //randomise button
-    randomButton.addEventListener('click', function() {
-      const randomSelection = movies[Math.floor(Math.random() * movies.length)];
-      resultsText.textContent = `${randomSelection.title}, ${randomSelection.year}. Directed by ${randomSelection.director}`;
-      getMovieInfo(randomSelection.movieId);
-      showelement(apiResults); // Ensure you have a function to show elements
-      showelement(randomiseAgainButton); // Show the "Want another random selection" button
-    });
+    function anotherRandomOutput() {
+  const randomSelection = movies[Math.floor(Math.random() * movies.length)];
+  const randomDirector = randomSelection.director;
+  const randomYear = randomSelection.year;
+  const randomTitle = randomSelection.title;
+  resultsText.innerHTML = `<strong>'${randomTitle}'</strong><br>Directed by ${randomDirector}, ${randomYear}`;
+  getMovieInfo(randomSelection.movieId);
+  showelement(apiResults);
+  showelement(randomiseAgainButton); 
+}
+
+const randomiseAgainButton = document.getElementById('randomiseAgain');
+
+randomButton.addEventListener('click', anotherRandomOutput);
+randomiseAgainButton.addEventListener('click', anotherRandomOutput);
+
   </script>
 </body>
 
 </html>
-
-
-        const randomDirector = randomSelection.director;
-        const randomYear = randomSelection.year;
-        const randomTitle = randomSelection.year
-        resultElement.innerHTML = `<strong>'${movieTitle}'</strong><br>Directed by ${director}, ${year}`;
-        resultsText.appendChild(resultElement);

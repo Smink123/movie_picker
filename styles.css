@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin-top: 0;
     height: auto;
@@ -93,7 +97,7 @@ button {
 }
 
 .imageContainer {
-    width: 50%;
+    width: 40%;
     height: auto;
     margin: 0 auto;
     text-align: center;
@@ -143,10 +147,31 @@ button {
 }
 
 #resultsBox {
-    background-color: #f5061c;
-    padding: 10px;
+    background-color: #3a48d8;
+    padding: 20px;
 }
 
 #resultsBox p {
-    padding: 20px;
+    padding: 10px;
 }
+
+/* CSS for the button container */
+.movie-info-button-container {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px; /* Optional: Add some space between buttons */
+  }
+  
+  .more-info-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  #movieDetails {
+    padding: 20px;
+  }
+
+  #resultsNumber {
+    text-align: center;
+  }
