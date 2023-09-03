@@ -14,9 +14,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
 <body>
   <div id="topSectionContainer">
-    <h1>CINE PICK</h1>
+    <h1>CINEPICK</h1>
     <p id="websiteIntro">In search of the perfect film for tonight's viewing? Allow CINEPICK to curate a tailored selection based on your unique preferences. Bid farewell to decision fatigue and embrace refined cinematic experiences with CINEPICK. Your movie night just got an upgrade.</p>
   <label for="genre">Genre:</label>
   <select id="genre">
@@ -51,20 +54,23 @@
     <option value="numberYear">By release year</option>
   </select>
   <button id="submit">Submit</button>
-  <br>
-  <br>
+  <p>Or, fancy something random?</p>
   <button id='randomise'>random choice</button>
   </div>
   <div id="resultsContainer">
     <div id="searchResultContainer">
       <p id="resultsNumber"></p>
       <p id="resultsBox"></p>
+      <button id="randomiseAgain" style="display: none;">Want another random selection</button>
       <button id="showMore">Show More</button>
       <button id="showAll">Show All</button>
     </div>
     <div id="movieDetails">
       <h3 id="movieTitle"></h3>
-      <img id="poster" src="" alt="Movie Poster">
+      <div class = 'imageContainer'>
+        <img id="poster" src="" alt="Movie Poster">
+        <div class="overlay"></div>
+      </div>
       <p id="movieOverview"></p>
     </div>
   </div>
@@ -1275,6 +1281,7 @@
     //submit button click
     submitButton.addEventListener("click", () => {
       searchResultsNumber.style.display = 'block';
+      hideElement(randomiseAgainButton)
       hideElement(apiResults)
       const selectedGenre = genreDropdown.value;
       const selectedYear = yearDropdown.value;
@@ -1339,7 +1346,10 @@
       let isInfoVisible = false;
       for (let i = 0; i < endIndex && i < results.length; i++) {
         const resultElement = document.createElement("p");
-        resultElement.textContent = `${results[i].title}, directed by ${results[i].director}, ${results[i].year}`;
+        const movieTitle = results[i].title;
+        const director = results[i].director;
+        const year = results[i].year;
+        resultElement.innerHTML = `<strong>'${movieTitle}'</strong><br>Directed by ${director}, ${year}`;
         resultsText.appendChild(resultElement);
         const movieInfoButton = document.createElement("button");
         movieInfoButton.textContent = 'want more movie info?';
@@ -1390,45 +1400,31 @@
       }
     });
     
+    //randomise again button
+    const randomiseAgainButton = document.getElementById('randomiseAgain');
+    randomiseAgainButton.addEventListener('click', () => {
+      const randomSelection = movies[Math.floor(Math.random() * movies.length)];
+      resultsText.textContent = `${randomSelection.title}, ${randomSelection.year}. Directed by ${randomSelection.director}`;
+      getMovieInfo(randomSelection.movieId);
+      showElement(apiResults);
+    });
+
     //randomise button
     randomButton.addEventListener('click', function() {
-      searchResultsNumber.style.display = 'none'
-      hideElement(showMoreButton)
-      hideElement(showAllButton);
-
-      function randomMovie(film) {
-        const randomiseSelection = film[Math.floor(Math.random() * film.length)];
-        return `${randomiseSelection.title}, ${randomiseSelection.year}. Directed by ${randomiseSelection.director}.`;
-      }
-      resultsText.textContent = randomMovie(movies)
-      // Initialize variables to track the active button and state
-      let activeButton = null;
-      let isInfoVisible = false;
-      const randomMovieInfoButton = document.createElement("button");
-      randomMovieInfoButton.textContent = 'want more movie info?'
-      randomMovieInfoButton.id = 'randomMovieInfo';
-      randomMovieInfoButton.addEventListener('click', () => {
-        // Toggle the state and show/hide the API content accordingly
-        if (!isInfoVisible) {
-          for (let i = 0; i < movies.length; i++) {
-            if (resultsText.textContent.includes(movies[i].title) && resultsText.textContent.includes(movies[i].director)) {
-              getMovieInfo(movies[i].movieId);
-              showelement(apiResults);
-            }
-          }
-          randomMovieInfoButton.textContent = 'show less?';
-          isInfoVisible = true;
-          activeButton = randomMovieInfoButton; // Update the active button reference
-        } else {
-          hideElement(apiResults);
-          randomMovieInfoButton.textContent = 'want more movie info?';
-          isInfoVisible = false;
-          activeButton = null; // Clear the active button reference
-        }
-      });
-      resultsText.appendChild(randomMovieInfoButton);
+      const randomSelection = movies[Math.floor(Math.random() * movies.length)];
+      resultsText.textContent = `${randomSelection.title}, ${randomSelection.year}. Directed by ${randomSelection.director}`;
+      getMovieInfo(randomSelection.movieId);
+      showelement(apiResults); // Ensure you have a function to show elements
+      showelement(randomiseAgainButton); // Show the "Want another random selection" button
     });
   </script>
 </body>
 
 </html>
+
+
+        const randomDirector = randomSelection.director;
+        const randomYear = randomSelection.year;
+        const randomTitle = randomSelection.year
+        resultElement.innerHTML = `<strong>'${movieTitle}'</strong><br>Directed by ${director}, ${year}`;
+        resultsText.appendChild(resultElement);
