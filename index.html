@@ -1223,6 +1223,7 @@
     const randomButton = document.getElementById('randomise')
     const apiResults = document.getElementById('movieDetails')
     const unfilledForm = document.getElementById('invalidForm')
+    const theResultsContainer = document.getElementById('resultsContainer')
 
     const movieInfoButton = document.createElement("div"); // Change from button to div
 movieInfoButton.classList.add('movie-info-button-container'); // Add a CSS class for styling
@@ -1238,6 +1239,7 @@ movieInfoButton.innerHTML = '<button class="more-info-button">Want more movie in
     function showelement(element) {
       element.style.display = 'block';
     }
+
     hideElement(showMoreButton)
     hideElement(showAllButton)
     hideElement(apiResults)
@@ -1262,24 +1264,28 @@ movieInfoButton.innerHTML = '<button class="more-info-button">Want more movie in
       const apiKey = '0db2b210052ac2389b97a0d37eb57c9b'; // Replace with your TMDb API key
       const movieId = movieIdNumber;
       async function fetchMovieDetails() {
-        const language = 'en-US'; // Change as needed
-        const url = `${tmdbBaseUrl}movie/${movieId}?api_key=${apiKey}&language=${language}`;
-        try {
-          const response = await fetch(url);
-          const data = await response.json();
-          // Update movie details on the webpage
-          const posterPath = data.poster_path ? `https://image.tmdb.org/t/p/w500/${data.poster_path}` : '';
-          const movieTitle = data.title || 'Movie Title';
-          const movieOverview = data.overview || 'Movie overview not available.';
-          document.getElementById('poster').src = posterPath;
-          document.getElementById('movieTitle').textContent = movieTitle;
-          document.getElementById('movieOverview').textContent = movieOverview;
-          // Show movie details section
-          document.getElementById('movieDetails').style.display = 'block';
-        } catch (error) {
-          console.error('Error fetching movie details:', error);
-        }
-      }
+  const language = 'en-US'; // Change as needed
+  const url = `${tmdbBaseUrl}movie/${movieId}?api_key=${apiKey}&language=${language}`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    // Update movie details on the webpage
+    const posterPath = data.poster_path ? `https://image.tmdb.org/t/p/w500/${data.poster_path}` : '';
+    const movieTitle = data.title || 'Movie Title';
+    const movieOverview = data.overview || 'Movie overview not available.';
+    document.getElementById('poster').src = posterPath;
+    document.getElementById('movieTitle').textContent = movieTitle;
+    document.getElementById('movieOverview').textContent = movieOverview;
+    // Show movie details section and center it
+    const movieDetailsSection = document.getElementById('movieDetails');
+    movieDetailsSection.style.display = 'flex';
+    movieDetailsSection.style.alignItems = 'center';
+    movieDetailsSection.style.justifyContent = 'center'; 
+  } catch (error) {
+    console.error('Error fetching movie details:', error);
+  }
+}
+
 
       // Fetch and display movie details from TMDb
       fetchMovieDetails();
@@ -1287,6 +1293,7 @@ movieInfoButton.innerHTML = '<button class="more-info-button">Want more movie in
 
     //submit button click
     submitButton.addEventListener("click", () => {
+  
   searchResultsNumber.style.display = 'block';
   hideElement(randomiseAgainButton);
   hideElement(apiResults);
@@ -1336,11 +1343,15 @@ movieInfoButton.innerHTML = '<button class="more-info-button">Want more movie in
     }
   }
 
+  
+
   // Scroll to the #resultsContainer only if the conditions are not met
   if (!(selectedGenre === "" && selectedYear === "" && selectedLanguage === "")) {
     document.getElementById('resultsContainer').scrollIntoView();
   }
 });
+
+
 
 function displayResults(results, endIndex) {
   if (results.length === 1) {
@@ -1437,6 +1448,7 @@ const randomiseAgainButton = document.getElementById('randomiseAgain');
 
 randomButton.addEventListener('click', anotherRandomOutput);
 randomiseAgainButton.addEventListener('click', anotherRandomOutput);
+
 
   </script>
 </body>
