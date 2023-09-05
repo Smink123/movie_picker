@@ -69,12 +69,14 @@
       </div>
     </div>
     <div id="movieDetails">
-      <h3 id="movieTitle"></h3>
       <div class = 'imageContainer'>
         <img id="poster" src="" alt="Movie Poster">
         <div class="overlay"></div>
       </div>
-      <p id="movieOverview"></p>
+      <div class="synopsis">
+        <h3 id="movieTitle"></h3>
+        <p id="movieOverview"></p>
+      </div>
     </div>
   </div>
   <script>
@@ -1405,8 +1407,8 @@ function displayResults(results, endIndex) {
       if (!isInfoVisible) {
         getMovieInfo(results[i].movieId);
         movieInfoButton.querySelector('.more-info-button').textContent = 'Show less';
-        apiResults.style.width = '50%'
-        leftResults.style.width = '50%'
+        apiResults.style.width = '550px'
+        leftResults.style.flex = '1';
         isInfoVisible = true;
         activeButton = movieInfoButton; // Update the active button reference
       } else {
@@ -1450,8 +1452,8 @@ function displayResults(results, endIndex) {
   const randomYear = randomSelection.year;
   const randomTitle = randomSelection.title;
   resultsText.innerHTML = `<strong>'${randomTitle}'</strong><br>Directed by ${randomDirector}, ${randomYear}`;
-  apiResults.style.width = '50%'
-  leftResults.style.width = '50%'
+  apiResults.style.width = '550px'
+  leftResults.style.flex = '1';
   getMovieInfo(randomSelection.movieId);
   showelement(apiResults);
   showelement(randomiseAgainButton); 

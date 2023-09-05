@@ -96,47 +96,60 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Poppins', sans-serif;
     height: 100vh;
-    padding: 20px;
+    position: relative;
+    background-color: black;
+    /*padding: 20px;*/
 }
+
 
 #movieDetails p {
-    padding-right: 20px;
-    padding-left: 20px;
-    margin: 20px 0;
-
+    font-family: 'Poppins', sans-serif;
+    color: #FFFFFF;
+    padding: 0 20px 20px;
 }
 
+.synopsis {
+    display: flex; /* Make .synopsis a flex container */
+    flex-direction: column; /* Stack the p elements vertically */
+    justify-content: flex-end; /* Align content to the bottom */
+    width: 550px;
+    height: 35%;
+    position: absolute;
+    bottom: 0;
+}
+
+
 #movieTitle {
-    text-align: center;
-    margin: 20px 0;
+    text-align: left;
+    font-size: 1rem;
+    color: #FFFFFF;
+    padding: 0 20px;
 }
 
 .imageContainer {
-    width: 35%;
-    height: auto;
-    margin: 20px auto;
+    width: 100%;
+    height: 100%;
     text-align: center;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Align the image at the top */
     position: relative;
 }
 
 #poster {
     width: 100%;
-    height: auto;
+    height: 80%;
     display: block;
 }
 
 .overlay {
     position: absolute;
-    bottom: 0;
+    bottom: 180px;
     left: 0;
     width: 100%;
-    height: 30%; /* Adjust the height to control the amount of fading */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    height: 50%; /* Adjust the height to control the amount of fading */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 
